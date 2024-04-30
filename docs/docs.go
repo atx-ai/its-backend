@@ -151,6 +151,42 @@ const docTemplate = `{
                         "description": "OK"
                     }
                 }
+            },
+            "patch": {
+                "description": "Update specific fields of an existing issue",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Update specific fields of an existing issue",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Issue ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Fields to be updated",
+                        "name": "updateRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Issue"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Issue"
+                        }
+                    }
+                }
             }
         }
     },
@@ -160,7 +196,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "assigned_to": {
-                    "description": "name of user who creates issue",
+                    "description": "name of assignee of the issue",
                     "type": "string"
                 },
                 "category": {
@@ -172,11 +208,11 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "created_on": {
-                    "description": "name of user who creates issue",
+                    "description": "issue created date",
                     "type": "string"
                 },
                 "eta": {
-                    "description": "name of user who creates issue",
+                    "description": "time whne issue will be fixed",
                     "type": "string"
                 },
                 "issue_description": {
@@ -187,7 +223,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "priority": {
-                    "description": "name of user who creates issue",
+                    "description": "issue prioroty",
                     "type": "string"
                 },
                 "state": {
@@ -195,14 +231,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "tags": {
-                    "description": "name of user who creates issue",
+                    "description": "tags to filter issue",
                     "type": "array",
                     "items": {
                         "type": "string"
                     }
                 },
                 "updated_on": {
-                    "description": "name of user who creates issue",
+                    "description": "issue updated time",
                     "type": "string"
                 }
             }

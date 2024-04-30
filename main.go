@@ -9,8 +9,9 @@ import (
 	_ "github.com/atx-ai/its-backend/docs" // Import the swag auto-generated docs file
 	"github.com/atx-ai/its-backend/model"
 	"github.com/atx-ai/its-backend/service"
-	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	chi "github.com/go-chi/chi/v5"
+	"github.com/go-chi/cors"
 	httpSwagger "github.com/swaggo/http-swagger"
 	"gorm.io/gorm"
 )
@@ -39,6 +40,10 @@ func main() {
 	// Middleware setup
 	router.Use(middleware.Logger)
 	router.Use(middleware.Recoverer)
+	router.Use(cors.Handler(cors.Options{
+		AllowedMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		MaxAge:         1800,
+	}))
 
 	// Routes setup
 	router.Route("/issues", func(r chi.Router) {

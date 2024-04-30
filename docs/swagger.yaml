@@ -3,7 +3,7 @@ definitions:
     description: Issue Structure
     properties:
       assigned_to:
-        description: name of user who creates issue
+        description: name of assignee of the issue
         type: string
       category:
         description: issue category
@@ -12,10 +12,10 @@ definitions:
         description: name of user who creates issue
         type: string
       created_on:
-        description: name of user who creates issue
+        description: issue created date
         type: string
       eta:
-        description: name of user who creates issue
+        description: time whne issue will be fixed
         type: string
       issue_description:
         description: issue descriptiom
@@ -23,18 +23,18 @@ definitions:
       issue_id:
         type: integer
       priority:
-        description: name of user who creates issue
+        description: issue prioroty
         type: string
       state:
         description: issue state
         type: string
       tags:
-        description: name of user who creates issue
+        description: tags to filter issue
         items:
           type: string
         type: array
       updated_on:
-        description: name of user who creates issue
+        description: issue updated time
         type: string
     type: object
 info:
@@ -107,6 +107,30 @@ paths:
           schema:
             $ref: '#/definitions/model.Issue'
       summary: Get an issue by ID
+    patch:
+      consumes:
+      - application/json
+      description: Update specific fields of an existing issue
+      parameters:
+      - description: Issue ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Fields to be updated
+        in: body
+        name: updateRequest
+        required: true
+        schema:
+          $ref: '#/definitions/model.Issue'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Issue'
+      summary: Update specific fields of an existing issue
     put:
       consumes:
       - application/json

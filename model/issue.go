@@ -13,10 +13,10 @@ type Issue struct {
 	IssueDescription string         `json:"issue_description"`                                  // issue descriptiom
 	Category         string         `json:"category"`                                           // issue category
 	State            string         `json:"state"`                                              // issue state
-	Priority         string         `json:"priority"`                                           // name of user who creates issue
-	Tags             pq.StringArray `json:"tags" gorm:"type:text[]" swaggertype:"array,string"` // name of user who creates issue
-	ETA              time.Time      `json:"eta"`                                                // name of user who creates issue
-	AssignedTo       string         `json:"assigned_to"`                                        // name of user who creates issue
-	CreatedOn        time.Time      `json:"created_on"`                                         // name of user who creates issue
-	UpdatedOn        time.Time      `json:"updated_on"`                                         // name of user who creates issue
+	Priority         string         `json:"priority"`                                           // issue prioroty
+	Tags             pq.StringArray `json:"tags" gorm:"type:text[]" swaggertype:"array,string"` // tags to filter issue
+	ETA              time.Time      `json:"eta"`                                                // time whne issue will be fixed
+	AssignedTo       string         `json:"assigned_to"`                                        // name of assignee of the issue
+	CreatedOn        time.Time      `json:"created_on"`                                         // issue created date
+	UpdatedOn        time.Time      `json:"updated_on"`                                         // issue updated time
 } // @name model.Issue

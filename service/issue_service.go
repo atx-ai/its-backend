@@ -3,6 +3,8 @@
 package service
 
 import (
+	"errors"
+
 	"github.com/atx-ai/its-backend/model"
 	"gorm.io/gorm"
 )
@@ -46,4 +48,19 @@ func (s *IssueService) ListIssues() ([]*model.Issue, error) {
 		return nil, err
 	}
 	return issues, nil
+}
+
+func (s *IssueService) PatchIssue(id uint, updateFields map[string]interface{}) error {
+	// Fetch the issue from the database
+	var issue model.Issue
+	if err := s.DB.First(&issue, id).Error; err != nil {
+		return errors.New("issue not found")
+	}
+
+	// Update the specific fields
+	if err := s.DB.Model(&issue).Updates(updateFields).Error; err != nil {
+		return err
+	}
+
+	return nil
 }

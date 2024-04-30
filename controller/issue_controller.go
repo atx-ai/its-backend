@@ -129,3 +129,32 @@ func (c *IssueController) ListIssues(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(issues)
 }
+
+// @Summary Update specific fields of an existing issue
+// @Description Update specific fields of an existing issue
+// @Accept json
+// @Produce json
+// @Param id path int true "Issue ID"
+// @Param updateRequest body model.Issue true "Fields to be updated"
+// @Success 200 {object} model.Issue
+// @Router /issues/{id} [patch]
+func (c *IssueController) PatchIssue(w http.ResponseWriter, r *http.Request) {
+	issueID, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		http.Error(w, "Invalid issue ID", http.StatusBadRequest)
+		return
+	}
+
+	var updateFields map[string]interface{}
+	if err := json.NewDecoder(r.Body).Decode(&updateFields); err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	if err := c.Service.PatchIssue(uint(issueID), updateFields); err != nil {
+		http.Error(w, "Failed to patch issue", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
