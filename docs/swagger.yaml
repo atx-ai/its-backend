@@ -1,0 +1,134 @@
+definitions:
+  model.Issue:
+    description: Issue Structure
+    properties:
+      assigned_to:
+        description: name of user who creates issue
+        type: string
+      category:
+        description: issue category
+        type: string
+      created_by:
+        description: name of user who creates issue
+        type: string
+      created_on:
+        description: name of user who creates issue
+        type: string
+      eta:
+        description: name of user who creates issue
+        type: string
+      issue_description:
+        description: issue descriptiom
+        type: string
+      issue_id:
+        type: integer
+      priority:
+        description: name of user who creates issue
+        type: string
+      state:
+        description: issue state
+        type: string
+      tags:
+        description: name of user who creates issue
+        items:
+          type: string
+        type: array
+      updated_on:
+        description: name of user who creates issue
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /issues:
+    get:
+      description: Get a list of all issues
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Issue'
+            type: array
+      summary: List all issues
+    post:
+      consumes:
+      - application/json
+      description: Create a new issue
+      parameters:
+      - description: Issue object to be created
+        in: body
+        name: issue
+        required: true
+        schema:
+          $ref: '#/definitions/model.Issue'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Issue'
+      summary: Create a new issue
+  /issues/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an issue by its ID
+      parameters:
+      - description: Issue ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Delete an issue by ID
+    get:
+      consumes:
+      - application/json
+      description: Get an issue by its ID
+      parameters:
+      - description: Issue ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Issue'
+      summary: Get an issue by ID
+    put:
+      consumes:
+      - application/json
+      description: Update an existing issue
+      parameters:
+      - description: Issue ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated issue object
+        in: body
+        name: issue
+        required: true
+        schema:
+          $ref: '#/definitions/model.Issue'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Issue'
+      summary: Update an existing issue
+swagger: "2.0"

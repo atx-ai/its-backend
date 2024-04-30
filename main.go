@@ -5,17 +5,20 @@ import (
 	"net/http"
 
 	"github.com/atx-ai/its-backend/controller"
-	"github.com/atx-ai/its-backend/db"
+	localdb "github.com/atx-ai/its-backend/db"
+	_ "github.com/atx-ai/its-backend/docs" // Import the swag auto-generated docs file
 	"github.com/atx-ai/its-backend/model"
 	"github.com/atx-ai/its-backend/service"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"gorm.io/gorm"
 )
 
 func main() {
 	// Initialize database connection
-	dbConn, err := connectDB()
+	var err error
+	dbConn, err := connectDB() // Assign to the global db variable
 	if err != nil {
 		log.Fatalf("failed to connect to database: %v", err)
 	}
@@ -46,6 +49,11 @@ func main() {
 		r.Get("/", issueController.ListIssues)
 	})
 
+	// Swagger documentation endpoint
+	router.Get("/swagger/*", httpSwagger.Handler(
+		httpSwagger.URL("/swagger/doc.json"), // The url pointing to API definition
+	))
+
 	// Start HTTP server
 	log.Println("Server is running on :8080")
 	http.ListenAndServe(":8080", router)
@@ -53,7 +61,7 @@ func main() {
 
 func connectDB() (*gorm.DB, error) {
 	// Define database connection options
-	dbOptions := db.DBOptions{
+	dbOptions := localdb.DBOptions{
 		Username: "issue_tracker",
 		Password: "issue_tracker",
 		Host:     "localhost",
@@ -64,5 +72,5 @@ func connectDB() (*gorm.DB, error) {
 	}
 
 	// Connect to the database
-	return db.ConnectDB(dbOptions)
+	return localdb.ConnectDB(dbOptions)
 }

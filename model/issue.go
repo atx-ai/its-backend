@@ -6,17 +6,17 @@ import (
 	"github.com/lib/pq"
 )
 
+// @Description Issue Structure
 type Issue struct {
-	ID               uint           `gorm:"primaryKey"`
-	CreatedBy        string         `json:"created_by"`
-	IssueID          string         `json:"issue_id"`
-	IssueDescription string         `json:"issue_description"`
-	Category         string         `json:"category"`
-	State            string         `json:"state"`
-	Priority         string         `json:"priority"`
-	Tags             pq.StringArray `json:"tags" gorm:"type:text[]"`
-	ETA              time.Time      `json:"eta"`
-	AssignedTo       string         `json:"assigned_to"`
-	CreatedOn        time.Time      `json:"created_on"`
-	UpdatedOn        time.Time      `json:"updated_on"`
-}
+	ID               uint           `json:"issue_id" gorm:"primaryKey"`
+	CreatedBy        string         `json:"created_by"`                                         // name of user who creates issue
+	IssueDescription string         `json:"issue_description"`                                  // issue descriptiom
+	Category         string         `json:"category"`                                           // issue category
+	State            string         `json:"state"`                                              // issue state
+	Priority         string         `json:"priority"`                                           // name of user who creates issue
+	Tags             pq.StringArray `json:"tags" gorm:"type:text[]" swaggertype:"array,string"` // name of user who creates issue
+	ETA              time.Time      `json:"eta"`                                                // name of user who creates issue
+	AssignedTo       string         `json:"assigned_to"`                                        // name of user who creates issue
+	CreatedOn        time.Time      `json:"created_on"`                                         // name of user who creates issue
+	UpdatedOn        time.Time      `json:"updated_on"`                                         // name of user who creates issue
+} // @name model.Issue
