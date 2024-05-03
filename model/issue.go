@@ -17,6 +17,6 @@ type Issue struct {
 	Tags             pq.StringArray `json:"tags" gorm:"type:text[]" swaggertype:"array,string"` // tags to filter issue
 	ETA              time.Time      `json:"eta"`                                                // time whne issue will be fixed
 	AssignedTo       string         `json:"assigned_to"`                                        // name of assignee of the issue
-	CreatedOn        time.Time      `json:"created_on"`                                         // issue created date
-	UpdatedOn        time.Time      `json:"updated_on"`                                         // issue updated time
+	CreatedAt        time.Time      `json:"created_on"`                                         // issue created date
+	UpdatedAt        time.Time      `json:"updated_on"`                                         // issue updated time
 } // @name model.Issue

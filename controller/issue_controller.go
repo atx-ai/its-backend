@@ -7,7 +7,7 @@ import (
 
 	"github.com/atx-ai/its-backend/model"
 	"github.com/atx-ai/its-backend/service"
-	"github.com/go-chi/chi"
+	chi "github.com/go-chi/chi/v5"
 )
 
 type IssueController struct {
@@ -16,6 +16,34 @@ type IssueController struct {
 
 func NewIssueController(service *service.IssueService) *IssueController {
 	return &IssueController{Service: service}
+}
+
+func (c *IssueController) Routes() chi.Router {
+	r := chi.NewRouter()
+	r.Get("/", c.ListIssues)
+	r.Post("/", c.CreateIssue)
+	r.Route("/{id}", func(r chi.Router) {
+		r.Get("/", c.GetIssue)
+		r.Put("/", c.UpdateIssue)
+		r.Patch("/", c.PatchIssue)
+		r.Delete("/", c.DeleteIssue)
+	})
+	return r
+}
+
+// @Summary List all issues
+// @Description Get a list of all issues
+// @Produce json
+// @Success 200 {array} model.Issue
+// @Router /issues [get]
+func (c *IssueController) ListIssues(w http.ResponseWriter, r *http.Request) {
+	issues, err := c.Service.ListIssues()
+	if err != nil {
+		http.Error(w, "Failed to fetch issues", http.StatusInternalServerError)
+		return
+	}
+
+	json.NewEncoder(w).Encode(issues)
 }
 
 // @Summary Get an issue by ID
@@ -113,21 +141,6 @@ func (c *IssueController) DeleteIssue(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-}
-
-// @Summary List all issues
-// @Description Get a list of all issues
-// @Produce json
-// @Success 200 {array} model.Issue
-// @Router /issues [get]
-func (c *IssueController) ListIssues(w http.ResponseWriter, r *http.Request) {
-	issues, err := c.Service.ListIssues()
-	if err != nil {
-		http.Error(w, "Failed to fetch issues", http.StatusInternalServerError)
-		return
-	}
-
-	json.NewEncoder(w).Encode(issues)
 }
 
 // @Summary Update specific fields of an existing issue

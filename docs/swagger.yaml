@@ -1,4 +1,21 @@
 definitions:
+  model.Comment:
+    properties:
+      comment_id:
+        type: integer
+      commented_by:
+        description: user name who puts comment
+        type: string
+      created_on:
+        description: comment created on
+        type: string
+      description:
+        description: commnet description
+        type: string
+      issue_id:
+        description: ID fo the issue for which addec comment
+        type: integer
+    type: object
   model.Issue:
     description: Issue Structure
     properties:
@@ -155,4 +172,123 @@ paths:
           schema:
             $ref: '#/definitions/model.Issue'
       summary: Update an existing issue
+  /issues/{issueID}/comments:
+    get:
+      description: List all comments associated with a specific issue
+      parameters:
+      - description: Issue ID
+        in: path
+        name: issueID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Comment'
+            type: array
+      summary: List comments for a specific issue
+      tags:
+      - comments
+    post:
+      consumes:
+      - application/json
+      description: Create a new comment for the specified issue
+      parameters:
+      - description: Issue ID
+        in: path
+        name: issueID
+        required: true
+        type: integer
+      - description: Comment details
+        in: body
+        name: comment
+        required: true
+        schema:
+          $ref: '#/definitions/model.Comment'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Comment'
+      summary: Create a new comment
+      tags:
+      - comments
+  /issues/{issueID}/comments/{id}:
+    delete:
+      description: Delete a comment by its ID for the specified issue
+      parameters:
+      - description: Issue ID
+        in: path
+        name: issueID
+        required: true
+        type: integer
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+      summary: Delete a comment
+      tags:
+      - comments
+    get:
+      description: Get a comment by its ID for the specified issue
+      parameters:
+      - description: Issue ID
+        in: path
+        name: issueID
+        required: true
+        type: integer
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Comment'
+      summary: Get a comment by ID
+      tags:
+      - comments
+    put:
+      consumes:
+      - application/json
+      description: Update a comment by its ID for the specified issue
+      parameters:
+      - description: Issue ID
+        in: path
+        name: issueID
+        required: true
+        type: integer
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated comment details
+        in: body
+        name: comment
+        required: true
+        schema:
+          $ref: '#/definitions/model.Comment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Update a comment
+      tags:
+      - comments
 swagger: "2.0"

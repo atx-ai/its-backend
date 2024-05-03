@@ -30,9 +30,17 @@ func main() {
 		log.Fatalf("failed to auto migrate schema: %v", err)
 	}
 
+	// Auto migrate the schema
+	err = dbConn.AutoMigrate(&model.Commnet{})
+	if err != nil {
+		log.Fatalf("failed to auto migrate schema: %v", err)
+	}
+
 	// Initialize service and controller
 	issueService := service.NewIssueService(dbConn)
+	commentService := service.NewCommnetService(dbConn)
 	issueController := controller.NewIssueController(issueService)
+	commnetController := controller.NewCommnetController(commentService)
 
 	// Initialize chi router
 	router := chi.NewRouter()
@@ -45,19 +53,13 @@ func main() {
 		MaxAge:         1800,
 	}))
 
-	// Routes setup
-	router.Route("/issues", func(r chi.Router) {
-		r.Get("/{id}", issueController.GetIssue)
-		r.Post("/", issueController.CreateIssue)
-		r.Put("/{id}", issueController.UpdateIssue)
-		r.Delete("/{id}", issueController.DeleteIssue)
-		r.Get("/", issueController.ListIssues)
-	})
-
 	// Swagger documentation endpoint
 	router.Get("/swagger/*", httpSwagger.Handler(
 		httpSwagger.URL("/swagger/doc.json"), // The url pointing to API definition
 	))
+
+	router.Mount("/issues", issueController.Routes())
+	router.Mount("/issues/{issueID}/comments", commnetController.Routes())
 
 	// Start HTTP server
 	log.Println("Server is running on :8080")
